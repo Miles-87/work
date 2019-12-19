@@ -1,9 +1,7 @@
 package pl.michonskim.works.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.michonskim.works.Service.CompanyService;
 import pl.michonskim.works.dto.CompanyDto;
@@ -11,11 +9,14 @@ import pl.michonskim.works.dto.CompanyDto;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("/companies")
+@RequestMapping("/company")
 public class CompanyController {
 
     CompanyService companyService;
+
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
+    }
 
     @GetMapping
     ResponseEntity<List<CompanyDto>> findAll() {

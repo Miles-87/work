@@ -16,11 +16,11 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Integer numberOfEmpployee;
+    private Integer numberOfEmployee;
     private String specialization;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Employee> eployees;
+    private Set<Employee> employees;
 }

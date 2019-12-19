@@ -13,7 +13,7 @@ public interface MyModelMapper {
         return CompanyDto.builder()
                 .id(company.getId())
                 .name(company.getName())
-                .numberOfEmployee(company.getNumberOfEmpployee())
+                .numberOfEmployee(company.getNumberOfEmployee())
                 .specialization(company.getSpecialization())
                 .build();
     }
@@ -22,9 +22,9 @@ public interface MyModelMapper {
         return Company.builder()
                 .id(companyDto.getId())
                 .name(companyDto.getName())
-                .numberOfEmpployee(companyDto.getNumberOfEmployee())
+                .numberOfEmployee(companyDto.getNumberOfEmployee())
                 .specialization(companyDto.getSpecialization())
-                .eployees(new HashSet<>())
+                .employees(new HashSet<>())
                 .build();
     }
 
@@ -39,7 +39,7 @@ public interface MyModelMapper {
                 .build();
     }
 
-    static Employee fromEpmployeeDtoToEmployee(EmployeeDto employeeDto){
+    static Employee fromEmployeeDtoToEmployee(EmployeeDto employeeDto){
         return Employee.builder()
                 .id(employeeDto.getId())
                 .name(employeeDto.getName())

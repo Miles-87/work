@@ -36,7 +36,7 @@ public class EmployeeService {
     }
 
     public EmployeeDto add(EmployeeDto employeeDto){
-        Employee employee = MyModelMapper.fromEpmployeeDtoToEmployee(employeeDto);
+        Employee employee = MyModelMapper.fromEmployeeDtoToEmployee(employeeDto);
         Employee employeeFromDb = employeeRepository.save(employee);
         return MyModelMapper.fromEmployeeToEmployeeDto(employeeFromDb);
     }

@@ -11,11 +11,14 @@ import pl.michonskim.works.dto.EmployeeDto;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/employee")
 public class EmployeeController {
 
     EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping
     public ResponseEntity<List<EmployeeDto>> all(){

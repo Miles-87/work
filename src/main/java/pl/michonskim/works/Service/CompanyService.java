@@ -52,7 +52,7 @@ public class CompanyService {
         }
         Company company = companyRepository.getOne(id);
         company.setName(companyDto.getName() == null ? company.getName() : companyDto.getName());
-        company.setNumberOfEmpployee(companyDto.getNumberOfEmployee() == null ? company.getNumberOfEmpployee() : companyDto.getNumberOfEmployee());
+        company.setNumberOfEmployee(companyDto.getNumberOfEmployee() == null ? company.getNumberOfEmployee() : companyDto.getNumberOfEmployee());
         company.setSpecialization(companyDto.getSpecialization() == null ? company.getSpecialization() : companyDto.getSpecialization());
         Company companyFromDb = companyRepository.save(company);
         return MyModelMapper.fromCompanyToCompanyDto(companyFromDb);

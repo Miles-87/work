@@ -43,5 +43,4 @@ public class CompanyController {
         return new ResponseEntity<>(companyService.delete(id), HttpStatus.OK);
     }
 
-
 }

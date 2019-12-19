@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.michonskim.works.dto.CompanyDto;
 import pl.michonskim.works.entity.Company;
-import pl.michonskim.works.exception.MyException;
+import pl.michonskim.works.exception.CompanyAlreadyExistException;
+import pl.michonskim.works.exception.CompanyNotFoundException;
+import pl.michonskim.works.exception.CompanyNullException;
 import pl.michonskim.works.mapper.MyModelMapper;
 import pl.michonskim.works.repository.CompanyRepository;
 import pl.michonskim.works.repository.EmployeeRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,16 +33,19 @@ public class CompanyService {
 
     public CompanyDto findOne(Long id) {
         if (id == null) {
-            throw new MyException("id shouldn't be null");
+            throw new CompanyNotFoundException("There is no company with this id", LocalDateTime.now());
         }
         return companyRepository.findById(id)
                 .map(MyModelMapper::fromCompanyToCompanyDto)
-                .orElseThrow(() -> new MyException("no company with this id"));
+                .orElseThrow(() -> new CompanyNotFoundException("There is no company with this id", LocalDateTime.now()));
     }
 
     public CompanyDto add(CompanyDto companyDto) {
         if (companyDto == null) {
-            throw new MyException("company shouldn't be null");
+            throw new CompanyNullException("Company shouldn't be null", LocalDateTime.now());
+        }
+        if(companyRepository.findById(companyDto.getId()).isPresent()){
+            throw new CompanyAlreadyExistException("exist", LocalDateTime.now());
         }
         Company company = MyModelMapper.fromCompanyDtoToCompany(companyDto);
         Company companyFromDb = companyRepository.save(company);
@@ -47,8 +53,11 @@ public class CompanyService {
     }
 
     public CompanyDto update(Long id, CompanyDto companyDto) {
+        if (id == null) {
+            throw new CompanyNotFoundException("There is no company with this id", LocalDateTime.now());
+        }
         if (companyDto == null) {
-            throw new MyException("company shouldn't be null");
+            throw new CompanyNullException("Company shouldn't be null", LocalDateTime.now());
         }
         Company company = companyRepository.getOne(id);
         company.setName(companyDto.getName() == null ? company.getName() : companyDto.getName());
@@ -61,7 +70,7 @@ public class CompanyService {
 
     public CompanyDto delete(Long id) {
         Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new MyException("id shouldn't be null"));
+                .orElseThrow(() -> new CompanyNotFoundException("There is no company with this id", LocalDateTime.now()));
 
         employeeRepository.saveAll(employeeRepository.findAllByCompany_Id(company.getId()))
                 .stream()

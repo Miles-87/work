@@ -5,11 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.michonskim.works.dto.EmployeeDto;
 import pl.michonskim.works.entity.Employee;
-import pl.michonskim.works.exception.MyException;
+import pl.michonskim.works.exception.EmployeeNotFoundException;
+import pl.michonskim.works.exception.EmployeeNullException;
 import pl.michonskim.works.mapper.MyModelMapper;
 import pl.michonskim.works.repository.CompanyRepository;
 import pl.michonskim.works.repository.EmployeeRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,34 +32,42 @@ public class EmployeeService {
 
     public EmployeeDto one(Long id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new MyException("fgf"));
+                .orElseThrow(() -> new EmployeeNotFoundException("there is no employee with this id", LocalDateTime.now()));
         return MyModelMapper.fromEmployeeToEmployeeDto(employee);
 
     }
 
-    public EmployeeDto add(EmployeeDto employeeDto){
+    public EmployeeDto add(EmployeeDto employeeDto) {
+        if (employeeDto == null) {
+            throw new EmployeeNullException("employee shouldn't be null", LocalDateTime.now());
+        }
         Employee employee = MyModelMapper.fromEmployeeDtoToEmployee(employeeDto);
         Employee employeeFromDb = employeeRepository.save(employee);
         return MyModelMapper.fromEmployeeToEmployeeDto(employeeFromDb);
     }
 
-    public EmployeeDto update(Long id, EmployeeDto employeeDto){
-        Employee employee = employeeRepository.getOne(id);
-        employee.setName(employeeDto.getName() == null? null:employeeDto.getName());
-        employee.setSurname(employeeDto.getSurname() == null ?null : employeeDto.getSurname());
-        employee.setGender(employeeDto.getGender() == null ? null:employeeDto.getGender());
-        employee.setAge(employeeDto.getAge() == null ? null :employeeDto.getAge());
+    public EmployeeDto update(Long id, EmployeeDto employeeDto) {
+        if (employeeDto == null) {
+            throw new EmployeeNullException("employee shouldn't be null", LocalDateTime.now());
+        }
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("there is no employee with this id", LocalDateTime.now()));
+        employee.setName(employeeDto.getName() == null ? null : employeeDto.getName());
+        employee.setSurname(employeeDto.getSurname() == null ? null : employeeDto.getSurname());
+        employee.setAge(employeeDto.getAge() == null ? null : employeeDto.getAge());
+        employee.setGender(employeeDto.getGender() == null ? null : employeeDto.getGender());
         Employee employeeFromDb = employeeRepository.save(employee);
         return MyModelMapper.fromEmployeeToEmployeeDto(employeeFromDb);
+
     }
 
-    public EmployeeDto delete(Long id){
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new MyException(""));
+    public EmployeeDto delete(Long id) {
+        if (id == null) {
+            throw new EmployeeNotFoundException("there is no employee with this id", LocalDateTime.now());
+        }
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("there is no employee with this id", LocalDateTime.now()));
         employeeRepository.delete(employee);
         return MyModelMapper.fromEmployeeToEmployeeDto(employee);
-
     }
-
 
 }

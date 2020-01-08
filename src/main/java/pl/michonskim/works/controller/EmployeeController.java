@@ -4,7 +4,7 @@ package pl.michonskim.works.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.michonskim.works.Service.EmployeeService;
+import pl.michonskim.works.service.EmployeeService;
 import pl.michonskim.works.dto.EmployeeDto;
 
 import java.util.List;

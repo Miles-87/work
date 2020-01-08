@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.michonskim.works.exception.CompanyAlreadyExistException;
-import pl.michonskim.works.exception.CompanyNotFoundException;
-import pl.michonskim.works.exception.ErrorResponse;
+import pl.michonskim.works.exception.*;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -22,14 +20,26 @@ public class ErrorHandlerController extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> sendCompanyNotFoundException(CompanyNotFoundException e) {
         String message = MessageFormat.format("Company not found", e.getMessage());
         logger.error(message);
-        return new ResponseEntity<>(new ErrorResponse(message, LocalDateTime.now()), HttpStatus.OK);
+        return new ResponseEntity<>(new ErrorResponse(message, LocalDateTime.now()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({CompanyAlreadyExistException.class})
     public @ResponseBody
     ResponseEntity<ErrorResponse> sendCompanyAlreadyExistException() {
-        return new ResponseEntity<>(new ErrorResponse("Already Exist", LocalDateTime.now()),HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new ErrorResponse("Already Exist", LocalDateTime.now()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler({EmployeeNotFoundException.class})
+    public ResponseEntity<ErrorResponse> sendEmployeeNotFoundException(EmployeeNotFoundException e) {
+        String message = MessageFormat.format("Employee not found", e.getMessage());
+        logger.error(message);
+        return new ResponseEntity<>(new ErrorResponse(message, LocalDateTime.now()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({EmployeeAlreadyExistException.class})
+    public @ResponseBody
+    ResponseEntity<ErrorResponse> sendEmployeeNotFoundException() {
+        return new ResponseEntity<>(new ErrorResponse("Already Exist", LocalDateTime.now()), HttpStatus.CONFLICT);
+    }
 
 }

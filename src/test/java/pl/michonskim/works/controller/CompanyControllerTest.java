@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import pl.michonskim.works.Service.CompanyService;
+import pl.michonskim.works.service.CompanyService;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyControllerTest {

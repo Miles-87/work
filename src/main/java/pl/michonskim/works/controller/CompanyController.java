@@ -3,7 +3,7 @@ package pl.michonskim.works.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.michonskim.works.Service.CompanyService;
+import pl.michonskim.works.service.CompanyService;
 import pl.michonskim.works.dto.CompanyDto;
 
 import java.util.List;

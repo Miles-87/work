@@ -40,6 +40,7 @@ public class CompanyService {
                 .orElseThrow(() -> new CompanyNotFoundException("There is no company with this id", LocalDateTime.now()));
     }
 
+
     public CompanyDto add(CompanyDto companyDto) {
         if (companyDto == null) {
             throw new CompanyNullException("Company shouldn't be null", LocalDateTime.now());

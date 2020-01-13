@@ -1,7 +1,6 @@
 package pl.michonskim.works.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.michonskim.works.dto.CompanyDto;
@@ -26,35 +25,40 @@ public class CompContr {
     }
 
     @GetMapping("/die")
-    ResponseEntity<LocalDateTime> jakis(){
+    ResponseEntity<LocalDateTime> jakis() {
         return new ResponseEntity<>(LocalDateTime.now(), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<CompanyDto> one(@PathVariable Long id){
-        return new ResponseEntity(compSer.one(id),HttpStatus.OK);
+    ResponseEntity<CompanyDto> one(@PathVariable Long id) {
+        return new ResponseEntity(compSer.one(id), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/as")
+    ResponseEntity<List<CompanyDto>> taki() {
+        return new ResponseEntity<>(compSer.companyWithTenOrMoreEmployee(), HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<CompanyDto> add(@RequestBody CompanyDto companyDto){
-        return new ResponseEntity<>(compSer.add(companyDto),HttpStatus.CREATED);
+    ResponseEntity<CompanyDto> add(@RequestBody CompanyDto companyDto) {
+        return new ResponseEntity<>(compSer.add(companyDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{name}")
-    ResponseEntity<List<CompanyDto>> byName(@RequestParam(required = false) String name){
-        return new ResponseEntity<>(compSer.byName(name), HttpStatus.OK);
+    @GetMapping("company/{name}")
+    ResponseEntity<CompanyDto> byName(@PathVariable String name) {
+        return new ResponseEntity<>(compSer.withName(name), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<CompanyDto> update(@PathVariable Long id,@RequestBody CompanyDto companyDto){
+    ResponseEntity<CompanyDto> update(@PathVariable Long id, @RequestBody CompanyDto companyDto) {
         return new ResponseEntity<>(compSer.update(companyDto, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<CompanyDto> delete(@PathVariable Long id){
-        return new ResponseEntity<>(compSer.delete(id),HttpStatus.OK);
+    ResponseEntity<CompanyDto> delete(@PathVariable Long id) {
+        return new ResponseEntity<>(compSer.delete(id), HttpStatus.OK);
     }
-
 
 
 }

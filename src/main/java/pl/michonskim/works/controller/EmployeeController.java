@@ -31,6 +31,11 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/ten/{name}")
+    public ResponseEntity<EmployeeDto> findByName(@PathVariable String name){
+        return new ResponseEntity<>(employeeService.byName(name), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<EmployeeDto> add(@RequestBody EmployeeDto employeeDto) {
         return new ResponseEntity<>(employeeService.add(employeeDto), HttpStatus.CREATED);

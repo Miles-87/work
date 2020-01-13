@@ -42,6 +42,11 @@ public class EmployeeService {
 //        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new CompanyNotFoundException("no", LocalDateTime.now()));
 //    }
 
+    public EmployeeDto byName(String name){
+        Employee employee = employeeRepository.findByName(name);
+        return MyModelMapper.fromEmployeeToEmployeeDto(employee);
+    }
+
     public EmployeeDto add(EmployeeDto employeeDto) {
         if (employeeDto == null) {
             throw new EmployeeNullException("employee shouldn't be null", LocalDateTime.now());
